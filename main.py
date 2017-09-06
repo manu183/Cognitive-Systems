@@ -1,8 +1,10 @@
 import cv2
 import numpy as np
+from os.path import basename, dirname, join, splitext
+
 from histogram import histogram_stretching, histogram_stretching_quantile, histogram_equalization
 from filter import gauss_2d, median, prewitt_x, prewitt_y, sobel_x, sobel_y, roberts_x, roberts_y, laplace, laplace_alt
-from os.path import basename, dirname, join, splitext
+from levenshtein import levenshtein_distance
 
 def stretch_histogram(image_path):
 	filename = basename(splitext(image_path)[0])
@@ -48,8 +50,18 @@ def convolve(image_path, filter):
 	im = cv2.imread(image_path, 0)
 	cv2.imwrite(join(folder, ''.join((filename, '-convolved', extension))), cv2.filter2D(im, -1, filter))
 
-# stretch_histogram("imgs/family-bad_contrast.jpg")
-# stretch_histogram_quantile("imgs/family-bad_contrast.jpg")
-# equalize_histogram("imgs/family-bad_contrast.jpg")
-# discrete_fourier_transform("imgs/family-bad_contrast.jpg")
+# Histogram normalization
+stretch_histogram("imgs/family-bad_contrast.jpg")
+stretch_histogram_quantile("imgs/family-bad_contrast.jpg")
+equalize_histogram("imgs/family-bad_contrast.jpg")
+
+# Fourier transformation
+discrete_fourier_transform("imgs/waterfall_jam.jpg")
+
+# Apply filters
 convolve("imgs/waterfall_jam.jpg", laplace_alt())
+
+# Levenshtein distance
+s = ['if there is no rain in April you will have a great summer','no rain in april then great summer come','there is rain in April you have summer','in April no rain you have summer great','there is no rain in apple a great summer comes','you have a great summer comes if there is no rain in April']
+t = [_.split() for _ in s]
+print "The word edit distances are %s ,the character distances are %s and the word distances having double-punishment for substitutions are %s" % ([levenshtein_distance(t[0],t[1]),levenshtein_distance(t[0],t[2]),levenshtein_distance(t[0],t[3]),levenshtein_distance(t[0],t[4]),levenshtein_distance(t[0],t[5])],[levenshtein_distance(s[0],s[1]),levenshtein_distance(s[0],s[2]),levenshtein_distance(s[0],s[3]),levenshtein_distance(s[0],s[4]),levenshtein_distance(s[0],s[5])],[levenshtein_distance(t[0],t[1],2),levenshtein_distance(t[0],t[2],2),levenshtein_distance(t[0],t[3],2),levenshtein_distance(t[0],t[4],2),levenshtein_distance(t[0],t[5],2)])

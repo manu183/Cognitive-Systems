@@ -12,3 +12,4 @@
   * Prewitt
   * Sobel
   * Roberts
+* Levenshtein distance
