@@ -13,3 +13,10 @@
   * Sobel
   * Roberts
 * Levenshtein distance
+* Rotation
+ * Create XYZ rotation matrix
+ * Create yaw/pitch/roll rotation matrix
+ * Normalize quaternions
+ * Convert quaternion to XYZ rotation matrix
+ * Convert quaternion to yaw/pitch/roll rotation matrix
+ * Convert rotation matrix to quaternion
